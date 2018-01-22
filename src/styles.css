@@ -1,0 +1,23 @@
+.heading1 {
+	height: 45px;
+	align: top, left;
+	font-size: 28px;
+	font-weight: 100;
+	font-family: 'Roboto Light', 'Roboto';
+	color: #000000;
+	margin-bottom: 20px;
+	font-weight: 100;
+	font-family: 'Roboto Light', 'Roboto';
+	color: #000000;
+}
+
+.heading2 {
+	height: 40px;
+	align: top, left;
+	font-size: 20px; font-weight : 100;
+	font-family: 'Roboto Thin', 'Roboto'; 
+	color : #000000;
+	margin-bottom: 15px;
+	font-weight: 100; font-family : 'Roboto Thin', 'Roboto';
+	color: #000000;
+}

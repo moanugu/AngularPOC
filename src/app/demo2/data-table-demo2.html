@@ -1,0 +1,76 @@
+<div style="max-width: 1000px;">
+<!--   <div> -->
+<!--     <span>Highlight after: </span> -->
+<!--     <input type="number" [(ngModel)]="yearLimit" class="form-control input-sm" style="display: inline-block; width: 100px"> -->
+<!--   </div> -->
+  <data-table
+    [items]="cars"
+    [itemCount]="carCount"
+    (reload)="reloadCars($event)"
+    [pagination]="false"
+    [indexColumn]="false"
+    [selectColumn]="true"
+    [multiSelect]="true"
+    [rowColors]="rowColors"
+    >
+    <data-table-column
+      property="npi_taxid"
+      header="PROVIDER NPI"
+      sortable="true">
+      <ng-template #dataTableCell let-item="item">
+        <input *ngIf="item.index==0 || item.isEdit " type="text" required [(ngModel)]="item.npi_taxid" class="form-control input-sm" style="width: 175px"/>
+        <span *ngIf="item.index!=0 && !item.isEdit">{{item.npi_taxid}}</span>
+      </ng-template>
+    </data-table-column>
+    <data-table-column
+      property="idType"
+      header="IDENTIFICATION TYPE"
+      sortable="true">
+      <ng-template #dataTableCell let-item="item">
+ 		<select *ngIf="item.index==0 || item.isEdit "  required [(ngModel)]="item.idType" style="width: 100px">
+ 		<option>NPI</option>
+ 		<option>TAX ID</option>
+ 		</select>
+        <span *ngIf="item.index!=0 && !item.isEdit">{{item.idType}}</span>
+      </ng-template>
+    </data-table-column>
+    <data-table-column
+      property="effectiveDate"
+      header="EFFECTIVE DATE"
+      sortable="true">
+      <ng-template #dataTableCell let-item="item">
+        <input *ngIf="item.index==0 || item.isEdit " required type="date" [ngModel] ="item.effectiveDate | date:'yyyy-MM-dd'" (ngModelChange)="item.effectiveDate = $event" [value]="datee | date:'yyyy-MM-dd'">
+        <span *ngIf="item.index!=0 && !item.isEdit">{{item.effectiveDate| date:'MM/dd/yyyy'}}</span>
+      </ng-template>
+    </data-table-column>
+    <data-table-column
+      property="terminationDate"
+      header="TERMINATION DATE"
+      sortable="true">
+      <ng-template #dataTableCell let-item="item">
+       	 <input *ngIf="item.index==0 || item.isEdit " required  type="date" [ngModel] ="item.terminationDate | date:'yyyy-MM-dd'" (ngModelChange)="item.terminationDate = $event" [value]="datee | date:'yyyy-MM-dd'">
+        <span *ngIf="item.index!=0 && !item.isEdit">{{item.terminationDate | date:'MM/dd/yyyy'}}</span>
+      </ng-template>
+    </data-table-column>
+     <data-table-column
+      header="Actions">
+      <ng-template #dataTableHeader let-item="item">
+        <i>Actions</i>
+      </ng-template>
+      <ng-template #dataTableCell let-item="item">
+        <button type="button" *ngIf="item.index==0" mat-raised-button (click)="addClicked(item)" class="btn btn-sm btn-default">Add</button>
+        <button *ngIf="item.index!=0 && !item.isEdit " (click)="editClicked(item)" class="btn btn-sm btn-default">Edit</button>
+        <button *ngIf="item.index!=0 && item.isEdit " (click)="saveClicked(item)" class="btn btn-sm btn-default">Save</button>
+      </ng-template>
+    </data-table-column>
+  </data-table>
+  <div>
+    <div>
+        <b>Selected:</b>
+        <span [textContent]="carsTable.selectedRows.length"></span>
+    </div>
+    <div *ngFor="let selected of carsTable.selectedRows">
+        <span [textContent]="selected.item.model"></span>
+    </div>
+  </div>
+</div>
