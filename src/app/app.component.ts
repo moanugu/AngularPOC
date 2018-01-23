@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { cars } from './demo2/data-table-demo2-data';
 
 @Component({
   selector: 'app-root',
@@ -10,16 +9,19 @@ export class AppComponent {
         
     private _totalRecords = 0;
 
-    get totalRecords() {
-        return this._totalRecords;
+    constructor(){
+//              alert(DataTableDemo2.getProviderCount());
     }
-
-    set totalRecords(totalRecords) {
-        alert();
-        this._totalRecords= cars.length;
-    }
+//    get totalRecords() {
+//        return this._totalRecords;
+//    }
+//
+//    set totalRecords(totalRecords) {
+//        this._totalRecords= totalRecords;
+//    }
     
       ngOnInit() {
-          this._totalRecords= Object.keys(cars).length;
+//          alert(DataTableDemo2.getProviderCount());
+//          this._totalRecords= this._totalRecords= DataTableDemo2.getProviderCount();
   }
 }

@@ -162,10 +162,14 @@ export class DataTable implements DataTableParams, OnInit {
     }
 
     @Output() reload = new EventEmitter();
+    @Output() deleteEvent = new EventEmitter();
 
     reloadItems() {
         this._reloading = true;
         this.reload.emit(this._getRemoteParameters());
+    }
+    deleteItems() {
+        this.deleteEvent.emit(this._getRemoteParameters());
     }
 
     private _onReloadFinished() {

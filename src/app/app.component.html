@@ -4,11 +4,11 @@
 		<p>Level 3 Professional</p>
 		<p>Add Providers by entering either NPI or Tax ID, or importing
 			from excel</p>
-		<p>
-			Showing <b>{{totalRecords}}</b> of <b>{{totalRecords}}</b> Providers
-		</p>
+<!-- 		<p> -->
+<!-- 			Showing <b>{{totalRecords}}</b> of <b>{{totalRecords}}</b> Providers -->
+<!-- 		</p> -->
 		<div>
-			<data-table-demo-2></data-table-demo-2>
+			<data-table-demo-2 [(getSearchStatus)]="totalRecords"></data-table-demo-2>
 		</div>
 		<div>
 			<a href="#">Import from excel</a>
@@ -17,7 +17,7 @@
 			<button type="button"
 				onclick="document.getElementById('id01').style.display='none'"
 				class="cancelbtn">Cancel</button>
-			<button type="submit" class="signupbtn">Sign Up</button>
+			<button type="submit" class="signupbtn">Done</button>
 		</div>
 	</div>
 </div>

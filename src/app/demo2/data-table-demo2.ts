@@ -1,7 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { DataTable, DataTableResource } from '../data-table';
-import { cars } from './data-table-demo2-data';
+//import { cars } from './data-table-demo2-data';
 import {HttpClient} from "@angular/common/http";
+import {AppComponent} from "./../app.component";
 
 @Component({
   selector: 'data-table-demo-2',
@@ -9,40 +10,81 @@ import {HttpClient} from "@angular/common/http";
 })
 export class DataTableDemo2 {
 
-     constructor(private http:HttpClient) {
+    @Input() getSearchStatus: number;
+    @Output() getSearchStatusChange new EventEmitter<number>();
+    
+    cars=Array<any>;
+    carResource={};
+    carCount=0;
+    totalCarCount=0;
+    constructor(private http:HttpClient) {
+         console.log('constructor');
+         this.http.get("http://localhost:8080/getAllProviders").subscribe(res => {
+             this.cars=res;
+             this.cars.splice(0,0,{index:0,'providerId':'', 'providerIdType':'', 'effectiveDate': new Date(), 'terminationDate': new Date()});
+             console.log(res);
+             this.carResource = new DataTableResource(this.cars);
+             this.carCount=Object.keys(this.cars).length;
+             this.getSearchStatusChange.emit(this.carCount);
+         });
     }
-    carResource = new DataTableResource(cars);
-    cars = [];
-    carCount = 0;
-
+    
     @ViewChild(DataTable) carsTable: DataTable;
 
-    constructor() {
-        this.rowColors = this.rowColors.bind(this);
-
-        this.carResource.count().then(count => this.carCount = count);
-    }
-
     reloadCars(params) {
-        this.carResource.query(params).then(cars => this.cars = cars);
+        console.log('reload');
+       if(this.carResource && this.carResource.query)
+        { 
+            this.carResource.query(params).then(cars => this.cars = cars);
+           }
+//        if(this.carResource && this.carResource.query)
+//        {
+//             this.http.get("http://localhost:8080/getAllProviders").subscribe(res => {
+//             this.cars=res;
+//             this.cars.splice(0,0,{index:0,'providerId':'', 'providerIdType':'', 'effectiveDate': new Date(), 'terminationDate': new Date()});
+//             console.log(res);
+//             this.carCount=Object.keys(this.cars).length;
+//             this.carResource = new DataTableResource(this.cars);
+//         });
+//            }
+    }
+    deleteItems() {
+        let tobeDeleted=[];
+        for(let i=0; i<this.carsTable.selectedRows.length; i++){
+            tobeDeleted.push(this.carsTable.selectedRows[i].item.providerId);
+        }
+        for(i=0; i<this.cars.length; i++){
+            if(tobeDeleted.indexOf(this.cars[i].providerId) !== -1) {
+                console.log(this.cars[i].providerId);
+                this.cars[i].deleted=true;
+            }
+        }
+         this.http.post("http://localhost:8080/providers/deleteProviders",this.cars).subscribe(res => {
+             this.cars=res;
+             console.log(res);
+             this.carCount=Object.keys(this.cars).length;
+             this.getSearchStatusChange.emit(this.carCount);
+             this.carResource = new DataTableResource(this.cars);
+         });
+       console.log(this.cars); 
+    }
+    getProviderCount() {
+        return Object.keys(this.cars).length;
     }
 
     // custom features:
 
     addClicked(car) {
-        
-        this.courses$ = this.http
-        .get("http://localhost:8080/providers/1231/deleteProvider", {})
-        .do(console.log)
-        .map(data => {
-        alert(JSON.stringify(data);    
-        })
-        
+        console.log('Add button clicked...');
         this.carResource.query(car).then(cars => {
-            alert(Object.keys(cars).length+1);
-            cars.splice(2, 0, { index: Object.keys(cars).length+1,  npi_taxid:  car.npi_taxid,  effectiveDate: car.effectiveDate, terminationDate: car.terminationDate ,idType:car.idType});
-            this.cars = cars
+            console.log(Object.keys(this.cars).length+1);
+            this.cars.splice(1, 0, { index: Object.keys(this.cars).length,  providerId:  car.providerId,  effectiveDate: car.effectiveDate, terminationDate: car.terminationDate ,providerIdType:car.providerIdType});
+            this.carCount=Object.keys(this.cars).length;
+            this.getSearchStatusChange.emit(this.carCount);
         });
+    }
+    deleteClicked(car) {
+        car.isEdit=true;
     }
     editClicked(car) {
         car.isEdit=true;

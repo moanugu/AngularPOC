@@ -1,37 +1,46 @@
 <div style="max-width: 1000px;">
-<!--   <div> -->
-<!--     <span>Highlight after: </span> -->
-<!--     <input type="number" [(ngModel)]="yearLimit" class="form-control input-sm" style="display: inline-block; width: 100px"> -->
-<!--   </div> -->
+    <div>
+    <span>Search: </span>
+    <input type="text" [(ngModel)]="yearLimit" class="form-control input-sm" style="display: inline-block; width: 100px">
+  </div>
   <data-table
     [items]="cars"
     [itemCount]="carCount"
-    (reload)="reloadCars($event)"
-    [pagination]="false"
+	(reload)="reloadCars($event)"
+	(deleteEvent)="deleteItems($event)"
+    [pagination]="true"
     [indexColumn]="false"
     [selectColumn]="true"
     [multiSelect]="true"
     [rowColors]="rowColors"
     >
     <data-table-column
-      property="npi_taxid"
-      header="PROVIDER NPI"
+      property="index"
+      header="Index"
       sortable="true">
       <ng-template #dataTableCell let-item="item">
-        <input *ngIf="item.index==0 || item.isEdit " type="text" required [(ngModel)]="item.npi_taxid" class="form-control input-sm" style="width: 175px"/>
-        <span *ngIf="item.index!=0 && !item.isEdit">{{item.npi_taxid}}</span>
+        <span>{{item.index}}</span>
       </ng-template>
     </data-table-column>
     <data-table-column
-      property="idType"
+      property="providerId"
+      header="PROVIDER NPI"
+      sortable="true">
+      <ng-template #dataTableCell let-item="item">
+        <input *ngIf="item.index==0 || item.isEdit " type="text" required [(ngModel)]="item.providerId" class="form-control input-sm" style="width: 175px"/>
+        <span *ngIf="item.index!=0 && !item.isEdit">{{item.providerId}}</span>
+      </ng-template>
+    </data-table-column>
+    <data-table-column
+      property="providerIdType"
       header="IDENTIFICATION TYPE"
       sortable="true">
       <ng-template #dataTableCell let-item="item">
- 		<select *ngIf="item.index==0 || item.isEdit "  required [(ngModel)]="item.idType" style="width: 100px">
+ 		<select *ngIf="item.index==0 || item.isEdit "  required [(ngModel)]="item.providerIdType" style="width: 100px">
  		<option>NPI</option>
  		<option>TAX ID</option>
  		</select>
-        <span *ngIf="item.index!=0 && !item.isEdit">{{item.idType}}</span>
+        <span *ngIf="item.index!=0 && !item.isEdit">{{item.providerIdType}}</span>
       </ng-template>
     </data-table-column>
     <data-table-column
